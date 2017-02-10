@@ -9,9 +9,9 @@
 #include <sstream>
 #include <iomanip>
 #include <locale>
-using namespace std;
 #include "fonctions.h"
 
+using namespace std;
 
 bool validerTelephone(const std::string& p_telephone)
 {
@@ -22,9 +22,9 @@ bool validerTelephone(const std::string& p_telephone)
 		int longueur = p_telephone.length();
 		char tableauchar[longueur];
 		if (longueur != 12)
-			{
+		{
 			return false;
-			}
+		}
 
 		/*
 		 * on met chacun des caracteres dans un tableau (j'ai realise plus tard que c'etait inutile,
@@ -32,9 +32,9 @@ bool validerTelephone(const std::string& p_telephone)
 		 *
 		 */
 		for (int i=0; i<= longueur; i++ )
-			{
-				tableauchar[i] = p_telephone[i];
-			}
+		{
+			tableauchar[i] = p_telephone[i];
+		}
 
 		/*
 		 * on verifie s'il y a des chiffres, des espace et des tirets a la bonne place
@@ -42,73 +42,72 @@ bool validerTelephone(const std::string& p_telephone)
 		 * etant donne que je verifie si le code regional est valide.
 		 */
 		for (int i=0; i < 3; i++)
+		{
+			if (!isdigit(tableauchar[i]))
 			{
-				if (isdigit(tableauchar[i]))
-				{
-
-				}
-				else
-				{
-					return false;
-				}
+				return false;
 			}
+		}
+		
 		if (tableauchar[3] != ' ')
-			{
+		{
 			return false;
-			}
+		}
+		
 		for (int i=4; i < 7; i++)
+		{
+			if (!isdigit(tableauchar[i]))
 			{
-				if (isdigit(tableauchar[i]))
-				{
-
-				}
-				else
-				{
-					return false;
-				}
+				return false;
 			}
+		}
+		
 		if (tableauchar[7] != '-')
-			{
+		{
 			return false;
-			}
+		}
+		
 		for (int i=8; i < 12; i++)
+		{
+			if (!isdigit(tableauchar[i]))
 			{
-				if (isdigit(tableauchar[i]))
-				{
-
-				}
-				else
-				{
-					return false;
-				}
+				return false;
 			}
+		}
 		/*
 		 * on verifie si le code regional est valide en generant un tableau qui contient toutes les possibilites
 		 * et en comparant les trois premieres valeurs a chaque entree de ce tableau
 		 */
 
 		string indicateur;
+		
 		for (int i = 0; i < 3; i++)
-			{
-			 indicateur += (tableauchar[i]);
-			}
+		{
+			indicateur += (tableauchar[i]);
+		}
+		
 		string listeregion[35] = {
 				"800", "866", "877", "888", "855", "900", "976", "403", "780", "604", "236", "250", "778", "902", "204", "506", "902", "905", "519",
 				"289", "705", "613", "807", "416", "647", "438", "514", "450", "579", "418", "581", "819", "306", "709", "867"
 		};
+		
 		for (int i = 0; i < 35; i++)
+		{
+			if (indicateur == listeregion[i])
 			{
-				if (indicateur == listeregion[i])
-					{
-						return true;
-					}
+				return true;
 			}
+		}
+
 		return false;
 }
 
-bool validerNumRAMQ(const std::string& p_numero, const std::string& p_nom, const
-std::string& p_prenom, int p_jourNaissance, int p_moisNaissance, int
-p_anneeNaissance, char p_sex)
+bool validerNumRAMQ(const std::string& p_numero, 
+					const std::string& p_nom, 
+					const std::string& p_prenom, 
+					int p_jourNaissance, 
+					int p_moisNaissance, 
+					int p_anneeNaissance, char p_sex)
 {
 
 	/*
@@ -118,11 +117,12 @@ p_anneeNaissance, char p_sex)
 
 	locale loc;
 	string nonom;
+	
 	for (int i = 0; i < 3; i++)
 	{
-
 		nonom += (p_numero[i]);
 	}
+	
 	string noprenom;
 	noprenom += (p_numero[3]);
 
@@ -136,23 +136,25 @@ p_anneeNaissance, char p_sex)
 	}
 
 	string noannee;
+	
 	for (int i = 5; i < 7; i++)
 	{
 		noannee += (p_numero[i]);
 	}
 
 	string nomois;
+	
 	for (int i = 7; i < 9; i++)
 	{
 		nomois += (p_numero[i]);
 	}
+	
 	string nojour;
 
 	if (p_numero[9] != ' ')
 	{
 		return false;
 	}
-
 
 	for (int i = 10; i < 12; i++)
 	{
@@ -165,6 +167,7 @@ p_anneeNaissance, char p_sex)
 	 */
 
 	string nom;
+	
 	for (int i = 0; i < 3; i++)
 	{
 		nom += (p_nom[i]);
@@ -177,6 +180,7 @@ p_anneeNaissance, char p_sex)
 
 
 	string prenom;
+	
 	prenom += (p_prenom[0]);
 	prenom [0] = toupper(prenom[0], loc);
 
@@ -192,11 +196,7 @@ p_anneeNaissance, char p_sex)
 
 	int moismodifie;
 
-	if (p_sex == 'F' || p_sex == 'f' || p_sex == 'M' || p_sex == 'm')
-	{
-
-	}
-	else
+	if (p_sex != 'F' && p_sex != 'f' && p_sex != 'M' && p_sex != 'm')
 	{
 		return false;
 	}
@@ -205,6 +205,7 @@ p_anneeNaissance, char p_sex)
 	{
 		moismodifie = p_moisNaissance + 50;
 	}
+
 	if (p_sex == 'M' || p_sex == 'm')
 	{
 		moismodifie = p_moisNaissance;
@@ -246,6 +247,7 @@ p_anneeNaissance, char p_sex)
 	{
 		return false;
 	}
+
 	return true;
 }
 
